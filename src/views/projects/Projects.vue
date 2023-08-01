@@ -49,12 +49,21 @@ import { useProjectsStore } from '@/stores/UseProjectsStore';
 import { type IProject } from '@/stores/UseProjectsStore';
 import { useShareStatesStore } from '@/stores/UseShareStatesStore';
 import EditableCell from '@/components/EditableCell.vue';
+import { onMounted} from "vue";
 
 const projectStore = useProjectsStore();
 const { projects } = storeToRefs(projectStore);
 
 const shareStateStore = useShareStatesStore()
 const { isShowProjects, currentProjectId, currentMockUrl } = storeToRefs(shareStateStore)
+
+
+onMounted(() => {
+    // 如果项目为空，默认创建一个
+    if (projects.value.length === 0) {
+        addItem()
+    }
+})
 
 /**
  * 为 el-table 每一行生成唯一 Key，防止就地更新时渲染错误
